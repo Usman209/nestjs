@@ -1,26 +1,24 @@
 import {
-  HttpCode,
   HttpException,
   HttpStatus,
-  Injectable,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/users.service';
 // import { CreateAuthenticationDto } from './dto/logIn.dto';
 import * as bcrypt from 'bcrypt';
 import RegisterDto from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 
 import { ConfigService } from '@nestjs/config';
 import PostgresErrorCode from 'src/database/postgresErrorCodes.enum';
-import User from 'src/users/entities/user.entity';
 
 export class AuthenticationService {
 
   constructor(
     // @InjectRepository()
-
-    private readonly usersService: UsersService,
+    @Inject(forwardRef(() => UserService))
+    private readonly usersService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -67,7 +65,7 @@ export class AuthenticationService {
 
     try {
       console.log('test')
-      const createdUser = await this.usersService.create123(data);
+      const createdUser = await this.usersService.create(data);
 
       console.log('inside', createdUser);
       createdUser.password = '';

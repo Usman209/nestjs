@@ -4,11 +4,11 @@ import * as Joi from '@hapi/joi';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthenticationService } from './authentication/authentication.service';
  
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true ,
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
@@ -18,14 +18,17 @@ import { AuthenticationService } from './authentication/authentication.service';
         PORT: Joi.number(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+      autoLoadEntities: true,
+
       })
-      
+
     }),
+    
     DatabaseModule,
     UsersModule,
     AuthenticationModule,
   ],
   controllers: [],
-  providers: [AuthenticationService],
+  providers: [],
 })
 export class AppModule {}
