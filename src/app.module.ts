@@ -5,6 +5,8 @@ import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { Connection } from 'typeorm';
+import { APP_FILTER } from '@nestjs/core';
+import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
  
 @Module({
   imports: [
@@ -30,7 +32,10 @@ import { Connection } from 'typeorm';
     AuthenticationModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide:APP_FILTER,
+    useClass:ExceptionsLoggerFilter // also goblly can use this way 
+  }],
 })
 export class AppModule {
   constructor(private connection: Connection) {}
