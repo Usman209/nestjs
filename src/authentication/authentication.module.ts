@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module,forwardRef } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationController } from './authentication.controller';
@@ -16,7 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
       useFactory:async (configService:ConfigService) => ({
         secret:configService.get('JWT_SECRET'),
         signOptions:{
-          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}s`,   
+          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}`,   
              },
         }),
     })

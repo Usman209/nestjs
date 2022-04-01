@@ -4,7 +4,7 @@ import {
   Inject,
   forwardRef,
 } from '@nestjs/common';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 // import { CreateAuthenticationDto } from './dto/logIn.dto';
 import * as bcrypt from 'bcrypt';
 import RegisterDto from './dto/register.dto';
@@ -17,8 +17,8 @@ export class AuthenticationService {
 
   constructor(
     // @InjectRepository()
-    @Inject(forwardRef(() => UserService))
-    private readonly usersService: UserService,
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -30,7 +30,7 @@ export class AuthenticationService {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      // user.password = undefined;
+      user.password = '';
       return user;
     } catch (error) {
       throw new HttpException(
@@ -64,10 +64,8 @@ export class AuthenticationService {
     var data = { ...registrationData, password: hashedPassword };
 
     try {
-      console.log('test')
       const createdUser = await this.usersService.create(data);
 
-      console.log('inside', createdUser);
       createdUser.password = '';
       return createdUser;
     } catch (error) {

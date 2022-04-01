@@ -23,7 +23,7 @@ export class AuthenticationController {
     const {user} = request;
     console.log('from here ',request)
     const cookie=await this.authenticationService.getCookieWithJwtToken(user.id as number)
-     response.setHeader('Set-Cookie', cookie);
+     await response.setHeader('Set-Cookie', cookie);
 
     user.password = '';
     return  response.send(user)

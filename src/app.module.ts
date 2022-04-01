@@ -4,6 +4,7 @@ import * as Joi from '@hapi/joi';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { Connection } from 'typeorm';
  
 @Module({
   imports: [
@@ -31,4 +32,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private connection: Connection) {}
+}
